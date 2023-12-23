@@ -1,18 +1,49 @@
 <!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
     <id>com.github.c10udburst.pycharmllmexplainer</id>
-    <name>pycharm-llm-explainer Template</name>
+    <name>Pycharm LLM Explainer</name>
     <vendor>c10udburst</vendor>
 
     <depends>com.intellij.modules.platform</depends>
 
-    <resource-bundle>messages.MyBundle</resource-bundle>
-
     <extensions defaultExtensionNs="com.intellij">
-        <toolWindow factoryClass="com.github.c10udburst.pycharmllmexplainer.toolWindow.MyToolWindowFactory" id="MyToolWindow"/>
+        <!-- Add your extensions here -->
+        <registryKey
+                defaultValue="llama2:7b"
+                key="com.github.c10udburst.pycharmllmexplainer.model"
+                restartRequired="false"
+                description="Select the model to use for explaining" />
+
+        <registryKey
+            defaultValue="http://localhost:11434/api/generate"
+            key="com.github.c10udburst.pycharmllmexplainer.endpoint"
+            restartRequired="false"
+            description="Select the endpoint to use for explaining" />
+
+        <registryKey
+            defaultValue="# Code&#xA;```{language}&#xA;{code}&#xA;```&#xA;&#xA;# Explanation&#xA;-"
+            key="com.github.c10udburst.pycharmllmexplainer.prompt"
+            restartRequired="false"
+            description="Select the prompt for the LLM" />
+
+        <applicationConfigurable
+            displayName="LLM Explainer"
+            id="com.github.c10udburst.pycharmllmexplainer.config.ExplainerConfigurable"
+            parentId="tools"
+            instance="com.github.c10udburst.pycharmllmexplainer.config.ExplainerConfigurable"
+            />
+
     </extensions>
 
-    <applicationListeners>
-        <listener class="com.github.c10udburst.pycharmllmexplainer.listeners.MyApplicationActivationListener" topic="com.intellij.openapi.application.ApplicationActivationListener"/>
-    </applicationListeners>
+    <actions>
+       <action
+                id="ExplainSelected"
+                class="com.github.c10udburst.pycharmllmexplainer.actions.ExplainSelected"
+                text="Explain Selected"
+                description="Explain selected">
+           <add-to-group group-id="EditorPopupMenu" anchor="last"/>
+           <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt X"/>
+         </action>
+    </actions>
+
 </idea-plugin>
