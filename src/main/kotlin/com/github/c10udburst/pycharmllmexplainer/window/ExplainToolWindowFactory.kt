@@ -11,7 +11,7 @@ import org.intellij.markdown.html.HtmlGenerator
 import org.intellij.markdown.parser.MarkdownParser
 import kotlin.concurrent.thread
 
-class ExplainToolWindowFactory(private val selection: String, private val language: String): ToolWindowFactory {
+class ExplainToolWindowFactory(private val selection: String): ToolWindowFactory {
     override fun createToolWindowContent(project: Project, toolWindow: ToolWindow) {
         val content = htmlComponent(
             lineWrap = true
@@ -24,7 +24,6 @@ class ExplainToolWindowFactory(private val selection: String, private val langua
             }
             val prompt = ExplainerConfig.instance.prompt
                 .replace("{code}", selection)
-                .replace("{language}", language)
             val result = api.askAsync(ExplainerConfig.instance.model, prompt)
             while (!result.isComplete) {
                 content.text = result.stream.joinToString("\n").toHtml()

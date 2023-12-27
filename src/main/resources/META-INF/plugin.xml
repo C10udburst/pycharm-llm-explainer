@@ -5,6 +5,7 @@
     <vendor>c10udburst</vendor>
 
     <depends>com.intellij.modules.platform</depends>
+    <depends>PythonCore</depends>
 
     <extensions defaultExtensionNs="com.intellij">
         <!-- Add your extensions here -->
@@ -15,13 +16,13 @@
                 description="Select the model to use for explaining" />
 
         <registryKey
-            defaultValue="http://localhost:11434/api/generate"
+            defaultValue="http://localhost:11434"
             key="com.github.c10udburst.pycharmllmexplainer.endpoint"
             restartRequired="false"
             description="Select the endpoint to use for explaining" />
 
         <registryKey
-            defaultValue="# Code&#xA;```{language}&#xA;{code}&#xA;```&#xA;&#xA;# Explanation&#xA;-"
+            defaultValue="# Code&#xA;```py&#xA;{code}&#xA;```&#xA;&#xA;# Explanation&#xA;-"
             key="com.github.c10udburst.pycharmllmexplainer.prompt"
             restartRequired="false"
             description="Select the prompt for the LLM" />
