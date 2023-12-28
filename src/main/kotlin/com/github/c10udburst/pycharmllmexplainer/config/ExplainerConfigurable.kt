@@ -12,7 +12,8 @@ class ExplainerConfigurable: BoundConfigurable("LLM Explainer") {
             row {
                 text("You can configure the LLM Explainer here.<br />" +
                         "This extension requires an <a href=\"https://ollama.ai/\">ollama.ai</a> server to be running.<br />" +
-                        "You may need to install the selected model, consult ollama.ai for more information.")
+                        "You may need to install the selected model, consult ollama.ai for more information.<br />" +
+                        "See <a href=\"https://github.com/C10udburst/pycharm-llm-explainer/blob/main/ollama-runner.ipynb\">ollama-runner.ipynb</a> for an example of how to run the server.")
             }
             row {
                 label("Model")
