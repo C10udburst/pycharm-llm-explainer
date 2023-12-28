@@ -6,10 +6,10 @@
 
 ## Template ToDo list
 - [x] Create a new [IntelliJ Platform Plugin Template][template] project.
-- [ ] Get familiar with the [template documentation][template].
+- [x] Get familiar with the [template documentation][template].
 - [x] Adjust the [pluginGroup](./gradle.properties), [plugin ID](./src/main/resources/META-INF/plugin.xml) and [sources package](./src/main/kotlin).
-- [ ] Adjust the plugin description in `README` (see [Tips][docs:plugin-description])
-- [ ] Review the [Legal Agreements](https://plugins.jetbrains.com/docs/marketplace/legal-agreements.html?from=IJPluginTemplate).
+- [x] Adjust the plugin description in `README` (see [Tips][docs:plugin-description])
+- [x] Review the [Legal Agreements](https://plugins.jetbrains.com/docs/marketplace/legal-agreements.html?from=IJPluginTemplate).
 - [ ] [Publish a plugin manually](https://plugins.jetbrains.com/docs/intellij/publishing-plugin.html?from=IJPluginTemplate) for the first time.
 - [ ] Set the `PLUGIN_ID` in the above README badges.
 - [ ] Set the [Plugin Signing](https://plugins.jetbrains.com/docs/intellij/plugin-signing.html?from=IJPluginTemplate) related [secrets](https://github.com/JetBrains/intellij-platform-plugin-template#environment-variables).
@@ -17,11 +17,15 @@
 - [ ] Click the <kbd>Watch</kbd> button on the top of the [IntelliJ Platform Plugin Template][template] to be notified about releases containing new features and fixes.
 
 <!-- Plugin description -->
-This Fancy IntelliJ Platform Plugin is going to be your implementation of the brilliant ideas that you have.
 
-This specific section is a source for the [plugin.xml](/src/main/resources/META-INF/plugin.xml) file which will be extracted by the [Gradle](/build.gradle.kts) during the build process.
+LLM Explainer is a plugin for PyCharm that allows you to explain python methods by using [ollama.ai](https://ollama.ai/) and open source LLMs.
 
-To keep everything working, do not remove `<!-- ... -->` sections. 
+To use the plugin, simply right click within a python method and select <kbd>Explain method</kbd>. This will open a tool window with the explanation.
+
+This plugin needs ollama server to be running, see [ollama-runner.ipynb](./ollama-runner.ipynb) to see how it can be run on Google Colab for example.
+
+To set the ollama server address, go to <kbd>Settings/Preferences</kbd> > <kbd>Tools</kbd> > <kbd>Explain with LLM</kbd> and set the address.
+
 <!-- Plugin description end -->
 
 ## Installation
