@@ -26,6 +26,11 @@ This plugin needs ollama server to be running, see [ollama-runner.ipynb](./ollam
 
 To set the ollama server address, go to <kbd>Settings/Preferences</kbd> > <kbd>Tools</kbd> > <kbd>Explain with LLM</kbd> and set the address.
 
+Highlighted Features:
+- Dynamic Customization: The plugin's integration with ollama.ai allows users to harness the power of different open-source models, tailoring the experience to their specific needs.
+- Flexible Prompting: Users can easily customize the prompt, ensuring that the plugin adapts to diverse coding scenarios.
+- Real-time Response Display: The utilization of a tool window ensures that LLM text responses are displayed in real time.
+
 <!-- Plugin description end -->
 
 ## Installation
