@@ -1,5 +1,6 @@
 package com.github.c10udburst.pycharmllmexplainer.window
 
+import com.github.c10udburst.pycharmllmexplainer.ExplainerBundle
 import com.github.c10udburst.pycharmllmexplainer.config.ExplainerConfig
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.wm.ToolWindow
@@ -12,6 +13,12 @@ import org.intellij.markdown.parser.MarkdownParser
 import kotlin.concurrent.thread
 
 class ExplainToolWindowFactory(private val selection: String): ToolWindowFactory {
+
+    override fun init(toolWindow: ToolWindow) {
+        // as per {@link ToolWindowFactory} documentation, this should be done automatically, but it isn't
+        toolWindow.stripeTitle = ExplainerBundle.message("toolwindow.stripe.com.github.c10udburst.pycharmllmexplainer.window")
+    }
+
     override fun createToolWindowContent(project: Project, toolWindow: ToolWindow) {
         val content = htmlComponent(
             lineWrap = true

@@ -18,7 +18,11 @@ import com.jetbrains.python.psi.PyAnnotation
 import com.jetbrains.python.psi.PyFunction
 import org.jetbrains.annotations.NotNull
 
+const val TOOL_WINDOW_ID = "com.github.c10udburst.pycharmllmexplainer.window"
+
 class ExplainSelected: AnAction() {
+
+
     override fun getActionUpdateThread(): ActionUpdateThread {
         return ActionUpdateThread.BGT
     }
@@ -43,10 +47,10 @@ class ExplainSelected: AnAction() {
             element = element.parent ?: return
         }
 
-        ToolWindowManager.getInstance(e.project!!).getToolWindow("Explain")?.remove()
+        ToolWindowManager.getInstance(e.project!!).getToolWindow(TOOL_WINDOW_ID)?.remove()
         ToolWindowManager.getInstance(e.project!!).registerToolWindow(
             RegisterToolWindowTask(
-                id = "Explain",
+                id = TOOL_WINDOW_ID,
                 anchor = ToolWindowAnchor.LEFT,
                 icon = null,
                 contentFactory = ExplainToolWindowFactory(element.toCompressedString(whitespaceWidth)),

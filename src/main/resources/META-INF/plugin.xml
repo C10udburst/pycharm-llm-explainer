@@ -7,6 +7,8 @@
     <depends>com.intellij.modules.platform</depends>
     <depends>PythonCore</depends>
 
+
+    <resource-bundle>messages.ExplainerBundle</resource-bundle>
     <extensions defaultExtensionNs="com.intellij">
         <!-- Add your extensions here -->
         <registryKey
@@ -28,10 +30,11 @@
             description="Select the prompt for the LLM" />
 
         <applicationConfigurable
-            displayName="LLM Explainer"
+            key="configurable.name"
             id="com.github.c10udburst.pycharmllmexplainer.config.ExplainerConfigurable"
             parentId="tools"
             instance="com.github.c10udburst.pycharmllmexplainer.config.ExplainerConfigurable"
+            bundle="messages.ExplainerBundle"
             />
 
     </extensions>
@@ -40,8 +43,9 @@
        <action
                 id="ExplainSelected"
                 class="com.github.c10udburst.pycharmllmexplainer.actions.ExplainSelected"
-                text="Explain Selected"
-                description="Explain selected">
+                text="Explain Method"
+                description="Explain method"
+       >
            <add-to-group group-id="EditorPopupMenu" anchor="last"/>
            <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt X"/>
          </action>

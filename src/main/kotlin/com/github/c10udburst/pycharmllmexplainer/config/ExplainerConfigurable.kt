@@ -1,5 +1,6 @@
 package com.github.c10udburst.pycharmllmexplainer.config
 
+import com.github.c10udburst.pycharmllmexplainer.ExplainerBundle
 import com.intellij.openapi.options.BoundConfigurable
 import com.intellij.openapi.ui.DialogPanel
 import com.intellij.ui.dsl.builder.bindText
@@ -10,24 +11,21 @@ class ExplainerConfigurable: BoundConfigurable("LLM Explainer") {
     override fun createPanel(): DialogPanel =
         panel {
             row {
-                text("You can configure the LLM Explainer here.<br />" +
-                        "This extension requires an <a href=\"https://ollama.ai/\">ollama.ai</a> server to be running.<br />" +
-                        "You may need to install the selected model, consult ollama.ai for more information.<br />" +
-                        "See <a href=\"https://github.com/C10udburst/pycharm-llm-explainer/blob/main/ollama-runner.ipynb\">ollama-runner.ipynb</a> for an example of how to run the server.")
+                text(ExplainerBundle.message("configurable.message"))
             }
             row {
-                label("Model")
+                label(ExplainerBundle.message("configurable.model"))
                 textField()
                     .bindText(ExplainerConfig.instance::model)
             }
             row {
-                label("API endpoint")
+                label(ExplainerBundle.message("configurable.api"))
                 textField()
                     .bindText(ExplainerConfig.instance::endpoint)
                     .columns(25)
             }
             row {
-                label("Prompt")
+                label(ExplainerBundle.message("configurable.prompt"))
                 textArea()
                     .bindText(ExplainerConfig.instance::prompt)
                     .columns(25)
