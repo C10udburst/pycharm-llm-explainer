@@ -9,9 +9,12 @@ import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.wm.RegisterToolWindowTask
 import com.intellij.openapi.wm.ToolWindowAnchor
 import com.intellij.openapi.wm.ToolWindowManager
+import com.intellij.psi.PsiComment
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
+import com.intellij.psi.util.childrenOfType
 import com.intellij.psi.util.elementType
+import com.jetbrains.python.psi.PyAnnotation
 import com.jetbrains.python.psi.PyFunction
 import org.jetbrains.annotations.NotNull
 
@@ -35,6 +38,7 @@ class ExplainSelected: AnAction() {
         val editor = e.getData(CommonDataKeys.EDITOR) ?: return
         val psiFile = e.getData(CommonDataKeys.PSI_FILE) ?: return
         var element = getElement(editor, psiFile) ?: return
+        val whitespaceWidth = editor.settings.getTabSize(e.project)
         while (element !is PyFunction) {
             element = element.parent ?: return
         }
@@ -45,7 +49,7 @@ class ExplainSelected: AnAction() {
                 id = "Explain",
                 anchor = ToolWindowAnchor.LEFT,
                 icon = null,
-                contentFactory = ExplainToolWindowFactory(element.toCompressedString()),
+                contentFactory = ExplainToolWindowFactory(element.toCompressedString(whitespaceWidth)),
                 canCloseContent = false
             )
         ).show()
@@ -58,31 +62,57 @@ class ExplainSelected: AnAction() {
         return file.findElementAt(position)
     }
 
-    private fun PyFunction.toCompressedString(): String {
-        val parameters = parameterList.parameters
+    private fun PsiElement.removeComments() {
+        childrenOfType<PsiComment>().forEach { it.delete() }
+        children.forEach { it.removeComments() }
+    }
+
+    private fun PsiElement.removeTypeAnnotations() {
+        childrenOfType<PyAnnotation>().forEach { it.delete() }
+        children.forEach { it.removeTypeAnnotations() }
+    }
+
+    private fun PyFunction.toCompressedString(whitespaceWidth: Int): String {
+        val parameters = parameterList.parameters // we can remove default values and the LLM can infer the types
             .filter { it.name != null }
             .joinToString(",") { it.name!! }
 
         var result = "def $name(${parameters}):\n"
 
-        val statements = statementList
+        var statements = statementList // we can filter out comments and docstrings
             .statements
             .filter {
+                it.isValid // filter out invalid statements
+            }
+            .filter { // filter out docstrings
                 it.firstChild != it.lastChild || it.firstChild?.firstChild.elementType.toString() != "Py:DOCSTRING"
             }
+            .map { // make PsiElements editable
+                it.copy()
+            }
 
-        result += statements.take(20).joinToString("\n") {
+        statements.forEach { // filter out stuff LLM should not need
+            it.removeComments()
+            it.removeTypeAnnotations()
+        }
+
+        statements = statements.filter { // filter out empty statements
+            it != null && it.text.isNotBlank()
+        }
+
+        result += statements.take(25).joinToString("\n") {
             "\t${it.text}"
         }
-        if (statements.size > 20) {
-            if (statements.size > 40) {
+        if (statements.size > 25) {
+            if (statements.size > 50) {
                 result += "\n\t..."
             }
-            result += "\n" + statements.takeLast(20).joinToString("\n") {
+            result += "\n" + statements.takeLast(25).joinToString("\n") {
                 "\t${it.text}"
             }
         }
 
         return result
+            .replace(" ".repeat(whitespaceWidth), "\t") // replace spaces with tabs as tab is only one token
     }
 }
